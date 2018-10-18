@@ -71,5 +71,5 @@ void loop() {
     digitalWrite (ledN2, LOW);
     counter = 0;
   }
-  delay(1000);
+  delay(950);
 }
