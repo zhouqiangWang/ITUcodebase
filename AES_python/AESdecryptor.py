@@ -79,7 +79,7 @@ Sb = [[0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0
 
 
 def getFromBox(n, S):
-    row = n & 0x000000f0 >> 4
+    row = (n & 0x000000f0) >> 4
     col = n & 0x0000000f
     return S[row][col]
 
@@ -266,7 +266,7 @@ def convertToString(s):
     res = ''
     for i in range(4):
         for j in range(4):
-            res += chr(s[j][i])
+            res += hex(s[j][i])
     return res
 
 
@@ -277,11 +277,18 @@ def aesDecryptor(ciphertext, key):
     w = expandKey(key)
     state = convertToState(ciphertext)
     addRoundKey(state, w, 10)
+    print("10 : ")
+    print(state)
     i = 9
     while i > 0:
         deSubBytes(state)
+        print("before shiftRows ", i, " : ")
+        print(state)
         deShiftRows(state)
+        print("before mixColums ", i, " : ")
+        print(state)
         deMixColumns(state)
+
         addRoundKey(state, w, i)
         i -= 1
     deSubBytes(state)
@@ -296,5 +303,5 @@ def aesDecryptor(ciphertext, key):
 
 ciphertext = 'i\x1d\x0bðò\x12áêëüÀ\rÄÇÜ¦'
 key = 'qwertyqwerty1234'
-aesDecryptor(ciphertext, key)
+print(aesDecryptor(ciphertext, key))
 

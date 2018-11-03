@@ -6,13 +6,18 @@ from numpy import *;
 
 
 def getWord(key):
+    print("one char = ", key)
     one = ord(key[0])
+    print("one = ", one)
     one <<= 24
     two = ord(key[1])
     two <<= 16
     three = ord(key[2])
     three <<= 8
     four = ord(key[3])
+    word = one|two|three|four
+    print("one = ", one, ", two = ", two, ", three = ", three, ", four = ", four)
+    print("getWord : ", word)
     return one|two|three|four
 
 
@@ -59,8 +64,9 @@ S = [[0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0x
      [0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16]]
 
 def getFromBox(n, S):
-    row = n & 0x000000f0 >> 4
+    row = (n & 0x000000f0) >> 4
     col = n & 0x0000000f
+    # print("n = %d, row = %d, col = %d, c = %d \n", n, row, col, S[row][col])
     return S[row][col]
 
 
@@ -125,8 +131,10 @@ def convertToState(p):
 def addRoundKey(s, w, round):
     for i in range(4):
         word = splitInt(w[round*4 + i])
+        print("print ", round, " word:")
+        print(word)
         for j in range(4):
-            s[j][i] ^= word[j]
+            s[j][i] = s[j][i] ^ word[j]
 
 
 # In[10]:
@@ -148,7 +156,7 @@ def convertToString(s):
         for j in range(4):
             # print(str(s([j][i])))
             # res = res + str(s([j][i]))
-            res = res + hex(s[i][j])
+            res = res + hex(s[j][i])
     print(res)
     return res
 
@@ -295,17 +303,25 @@ def deShiftRows(s):
 
 def aesEncryptor(plaintext, key):
     w = expandKey(key)
+    # print("expandKey :")
+    # print(w)
     state = convertToState(plaintext)
     addRoundKey(state, w, 0)
+    print("1 : ")
     print(state)
     for i in range(1, 10):
         subBytes(state)
+        print("before shiftRows ", i, " : ")
+        print(state)
         shiftRows(state)
-
+        print("before mixColums ", i, " : ")
         print(state)
         mixColumns(state)
+        print("after mixColums ", i, " : ")
         print(state)
         addRoundKey(state, w, i)
+        print("after addRoundKey ", i, " : ")
+        print(state)
     subBytes(state)
     shiftRows(state)
     addRoundKey(state, w, 10)
@@ -318,13 +334,13 @@ def aesEncryptor(plaintext, key):
 
 plaintext = 'helloworld123456'
 key = 'qwertyqwerty1234'
-# aesEncryptor(plaintext, key)
-testM = [[0xc9, 0xe0, 0xb8, 0x1e], [0x6e, 0xbf, 0xb4, 0x41], [0x46, 0x98, 0x5d, 0x52], [0xa6, 0xf1, 0xe5, 0x30]]
+aesEncryptor(plaintext, key)
+# testM = [[0xc9, 0xe0, 0xb8, 0x1e], [0x6e, 0xbf, 0xb4, 0x41], [0x46, 0x98, 0x5d, 0x52], [0xa6, 0xf1, 0xe5, 0x30]]
 
 # print(testM)
-deMixColumns(testM)
-print(testM)
+# deMixColumns(testM)
+# print(testM)
 # mixColumns(testM)
-print(hex(testM[1][0]))
+# print(hex(testM[1][0]))
 #
 # print(hex(result[0][0]))
