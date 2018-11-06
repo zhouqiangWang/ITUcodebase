@@ -103,6 +103,8 @@ int readStrFromFile(char *fileName, char *str) {
     }
     
     str[i] = '\0';
+    printf("cipertext len = %d\n", i);
+    printf("cipertext = %s\n", str);
     fclose(fp);
     return i;
 }

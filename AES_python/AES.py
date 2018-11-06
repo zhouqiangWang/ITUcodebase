@@ -145,6 +145,13 @@ def convertToString(s):
     for i in range(4):
         for j in range(4):          
             res += chr(s[j][i])
+
+    res = res.encode('utf-8')
+    print(res)
+    print("res len = ", len(res))
+
+    with open('./ciper.txt', 'wb') as f:
+        f.write(res)
     return res
 
 

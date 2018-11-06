@@ -162,7 +162,7 @@ def deMixColumns(array):
 
     for i in range(4):
         for j in range(4):
-            array[i][j] = GFMul(deColM[i][0],tempArray[0][j]) ^ GFMul(deColM[i][1],tempArray[1][j]) ^ GFMul(deColM[i][2],tempArray[2][j]) ^ GFMul(deColM[i][3], tempArray[3][j]);
+            array[i][j] = GFMul(deColM[i][0], tempArray[0][j]) ^ GFMul(deColM[i][1], tempArray[1][j]) ^ GFMul(deColM[i][2], tempArray[2][j]) ^ GFMul(deColM[i][3], tempArray[3][j])
 
     return array
 
@@ -266,30 +266,50 @@ def convertToString(s):
     res = ''
     for i in range(4):
         for j in range(4):
-            res += hex(s[j][i])
+            # res += hex(s[j][i])
+            res += chr(s[j][i])
     return res
 
 
 # In[16]:
 
+def getArrayFrom4W(round, w):
+    roundMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    col0 = splitInt(w[round*4])
+    col1 = splitInt(w[round*4 + 1])
+    col2 = splitInt(w[round*4 + 2])
+    col3 = splitInt(w[round*4 + 3])
+
+    for i in range(4):
+        roundMatrix[i][0] = col0[i]
+        roundMatrix[i][1] = col1[i]
+        roundMatrix[i][2] = col2[i]
+        roundMatrix[i][3] = col3[i]
+
+    return roundMatrix
+
+def addRoundTowArray(state, roundMatrix):
+    for i in range(4):
+        for j in range(4):
+            state[i][j] = state[i][j] ^ roundMatrix[i][j]
 
 def aesDecryptor(ciphertext, key):
     w = expandKey(key)
     state = convertToState(ciphertext)
     addRoundKey(state, w, 10)
-    print("10 : ")
-    print(state)
+    # print("10 : ")
+    # print(state)
     i = 9
     while i > 0:
         deSubBytes(state)
-        print("before shiftRows ", i, " : ")
-        print(state)
+        # print("before deShiftRows ", i, " : ")
+        # print(state)
         deShiftRows(state)
-        print("before mixColums ", i, " : ")
-        print(state)
         deMixColumns(state)
+        matrixRoundKey = getArrayFrom4W(i, w)
+        deMixColumns(matrixRoundKey)
 
-        addRoundKey(state, w, i)
+        addRoundTowArray(state, matrixRoundKey)
         i -= 1
     deSubBytes(state)
     deShiftRows(state)
@@ -302,6 +322,14 @@ def aesDecryptor(ciphertext, key):
 
 
 ciphertext = 'i\x1d\x0bðò\x12áêëüÀ\rÄÇÜ¦'
+
+cipherHex = ''
+with open('./ciper.txt', 'rb') as f:
+    ciphertext = f.read().decode('utf-8')
+print("ciper len = ", len(ciphertext))
+for i in ciphertext:
+    cipherHex += hex(ord(i))
+print(cipherHex)
 key = 'qwertyqwerty1234'
 print(aesDecryptor(ciphertext, key))
 

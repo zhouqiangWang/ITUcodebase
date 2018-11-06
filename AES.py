@@ -155,9 +155,12 @@ def convertToString(s):
     for i in range(4):
         for j in range(4):
             # print(str(s([j][i])))
-            # res = res + str(s([j][i]))
-            res = res + hex(s[j][i])
+            res = res + str(s[j][i])
+            # res = res + hex(s[j][i])
     print(res)
+    print("res len = ", len(res))
+    with open('./ciper.txt', 'w') as f:
+        f.write(res)
     return res
 
 def shiftRows(s):

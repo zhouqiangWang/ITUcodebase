@@ -230,7 +230,7 @@ static void addRoundKey(int array[4][4], int round) {
     for(int i = 0; i < 4; i++) {
 
         splitIntToArray(w[ round * 4 + i], warray);
-        printf("round %d :[", round);
+        printf("addRoundKey - round %d :[", round);
         for (int id = 0; id < 4; id++) {
             printf("%d, ", warray[id]);
         }
@@ -582,16 +582,28 @@ void deAes(char *c, int clen, char *key) {
 
 
         addRoundKey(cArray, 10);
+        
+        printf("10 state:\n");
+        printState(cArray);
 
         int wArray[4][4];
         for(int i = 9; i >= 1; i--) {
             deSubBytes(cArray);
-
+            printf("before deShiftRows, %d : \n", i);
+            printState(cArray);
             deShiftRows(cArray);
 
+            printf("before deMixColumns, %d : \n", i);
+            printState(cArray);
             deMixColumns(cArray);
+            printf("after deMixColumns, %d : \n", i);
+            printState(cArray);
             getArrayFrom4W(i, wArray);
+            printf("getArrayFrom4W, %d : \n", i);
+            printState(wArray);
             deMixColumns(wArray);
+            printf("after deMixColumns - wArray, %d : \n", i);
+            printState(wArray);
 
             addRoundTowArray(cArray, wArray);
         }
