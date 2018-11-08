@@ -1,13 +1,13 @@
 #include <Servo.h>
 
-const int leftTrigPin = 10;
-const int leftEchoPin = 11;
+const int leftTrigPin = 4;
+const int leftEchoPin = 5;
 
-const int rightTrigPin = 5;
-const int rightEchoPin = 6;
+const int rightTrigPin = 6;
+const int rightEchoPin = 7;
 
-const int frontTrigPin = 7;
-const int frontEchoPin = 8;
+const int frontTrigPin = 2;
+const int frontEchoPin = 3;
 
 Servo servoLeft;
 Servo servoRight;
@@ -84,15 +84,22 @@ void loop()
   Serial.print(", front(cm): ");
   Serial.print(cmFront);
   Serial.println();
-  if (cmFront < 15) {
-    if (cmRight > 15) {
-      turnRight(2900);
-    } else if (cmLeft > 15) {
-      turnLeft(2900);
+  if (cmFront < 20) {
+    if (cmRight > cmLeft) {
+      turnRight(1800);
+    } else {
+      turnLeft(1000);
     }
   } else {
-    forward(1000);
+    if (cmRight < 5) {
+      turnLeft(20);
+    } else if (cmLeft < 5) {
+      turnRight(20);
+    } else {
+      forward(200);
+    }
   }
+  
 }
 
 long microsecondsToInches(long microseconds)
@@ -115,8 +122,8 @@ long microsecondsToCentimeters(long microseconds)
 
 void forward(int time) // Forward function
 {
-  servoLeft.writeMicroseconds(1700); // Left wheel counterclockwise
-  servoRight.writeMicroseconds(1300); // Right wheel clockwise
+  servoLeft.writeMicroseconds(1300); // Left wheel counterclockwise
+  servoRight.writeMicroseconds(1700); // Right wheel clockwise
   delay(time); // Maneuver for time ms
 }
 void turnLeft(int time) // Left turn function
