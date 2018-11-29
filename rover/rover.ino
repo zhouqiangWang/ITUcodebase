@@ -1,18 +1,18 @@
 #include <Servo.h>
 
-const int leftTrigPin = 4;
-const int leftEchoPin = 5;
+const int leftTrigPin = 7;
+const int leftEchoPin = 6;
 
-const int rightTrigPin = 6;
-const int rightEchoPin = 7;
+const int rightTrigPin = 5;
+const int rightEchoPin = 4;
 
-const int frontTrigPin = 2;
-const int frontEchoPin = 3;
+const int frontTrigPin = 10;
+const int frontEchoPin = 8;
 
 Servo servoLeft;
 Servo servoRight;
 void setup() {
-  // initialize serial communication:
+//  initialize serial communication:
 //  tone(4, 3000, 1000);
   Serial.begin(9600);
   servoLeft.attach(13); // Attach left signal to pin 13 
@@ -27,8 +27,6 @@ void setup() {
   pinMode(leftEchoPin, INPUT);
   pinMode(rightEchoPin, INPUT);
   pinMode(frontEchoPin, INPUT);
-//  servoLeft.writeMicroseconds(1500); // Left wheel counterclockwise
-//  servoRight.writeMicroseconds(1500); // Right wheel clockwise
 }
 
 void loop()
@@ -37,8 +35,6 @@ void loop()
   // and the distance result in inches and centimeters:
   long durationLeft, inches, cmLeft;
   long durationRight, cmRight, durationFront, cmFront;
-//  servoLeft.writeMicroseconds(1700); // Left wheel counterclockwise
-//  servoRight.writeMicroseconds(1300); // Right wheel clockwise
 
   // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
@@ -66,12 +62,8 @@ void loop()
   digitalWrite(frontTrigPin, LOW);
   durationFront = pulseIn(frontEchoPin, HIGH);
 
-//  
-//  Serial.print("durationRight: ");
-//  Serial.print(durationRight);
-
   // convert the time into a distance
-//  inches = microsecondsToInches(durationLeft);
+  // inches = microsecondsToInches(durationLeft);
   cmLeft = microsecondsToCentimeters(durationLeft);
   cmRight = microsecondsToCentimeters(durationRight);
   cmFront = microsecondsToCentimeters(durationFront);
@@ -84,17 +76,17 @@ void loop()
   Serial.print(", front(cm): ");
   Serial.print(cmFront);
   Serial.println();
-  if (cmFront < 20) {
+  if (cmFront < 12) {
     if (cmRight > cmLeft) {
-      turnRight(1800);
+      turnRight(540);
     } else {
-      turnLeft(1000);
+      turnLeft(400);
     }
   } else {
-    if (cmRight < 5) {
-      turnLeft(20);
-    } else if (cmLeft < 5) {
-      turnRight(20);
+    if (cmRight < 3) {
+      turnLeft(15);
+    } else if (cmLeft < 3) {
+      turnRight(15);
     } else {
       forward(200);
     }
@@ -122,8 +114,8 @@ long microsecondsToCentimeters(long microseconds)
 
 void forward(int time) // Forward function
 {
-  servoLeft.writeMicroseconds(1300); // Left wheel counterclockwise
-  servoRight.writeMicroseconds(1700); // Right wheel clockwise
+  servoLeft.writeMicroseconds(1700); // Left wheel counterclockwise
+  servoRight.writeMicroseconds(1300); // Right wheel clockwise
   delay(time); // Maneuver for time ms
 }
 void turnLeft(int time) // Left turn function

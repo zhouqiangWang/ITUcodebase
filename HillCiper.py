@@ -1,5 +1,27 @@
 from numpy import *;
 
+# 2x2 encryption de
+keyMatrix22 = mat([[2, 3], [15, 23]])
+det22 = linalg.det(keyMatrix22)
+print("det22 = ", det22)
+
+key2I = keyMatrix22.I % 36
+print("det22.I = ", key2I)
+
+plainText = "dist"
+print("plain text:", plainText)
+for c in plainText:
+    print(ord(c) - ord('a'))
+message1 = mat([[3], [8]])
+message2 = mat([[18], [19]])
+
+ciperText1 = (keyMatrix22 * message1) % 36
+ciperText2 = ((keyMatrix22 * message2) % 36)
+print("ciper text1 = ", ciperText1)
+print("ciper text2 = ", ciperText2)
+
+print("plaint text1 : ", (key2I * ciperText1)%36)
+
 # 3x3 encryption decryption
 keyMatrix1 = mat([[4, 5, 6], [1, 2, 3], [7, 8, 10]])
 print("3x3 matrix for encryption:\n", keyMatrix1)
