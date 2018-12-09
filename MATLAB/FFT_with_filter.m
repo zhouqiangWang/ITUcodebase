@@ -1,5 +1,5 @@
 clc; clear all;
-[x,fs] = audioread('mark.wav');
+[x,fs] = audioread('joewang.wav');
 x = x';
 xx = x;
 k = 0;
@@ -10,7 +10,7 @@ x = y;
 % pause(11);
 % sound(x,fs)
 N = length(x);
-for OM = 0:0.05:pi
+for OM = 0:0.01:pi
     
     tmp = 0;
     for n = 0:N-1

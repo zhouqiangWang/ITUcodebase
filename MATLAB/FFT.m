@@ -1,6 +1,6 @@
 clc; clear all;
 
-[x,fs] = audioread('mark.wav');
+[x,fs] = audioread('joewang.wav');
 x = x';
 x = x(1:2*fs);
 plot(x)

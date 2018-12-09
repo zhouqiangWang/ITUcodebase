@@ -1,5 +1,5 @@
 clc; clear all;
-[x,fs] = audioread('mark.wav');
+[x,fs] = audioread('joewang.wav');
 x = x';
 
 N = length(x);
