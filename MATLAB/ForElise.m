@@ -40,7 +40,7 @@ E6 = 2*pi*1318.51;
 
 tempo = 60/240;
 
-% start from Bar5
+% right hand + left hand, 1/8 beat based
 notation = [E5 0; Eb5 0; E5 0; Eb5 0; E5 0; B 0; D5 0; C5 0; A A2; A E3; 0 A3;C 0; E 0; A 0;B E2; B E3; 0 Ab3;E 0; Ab 0; B 0; C5 A2; C5 E3; 0 A3; E 0; E5 0; Eb5 0;
     E5 0; Eb5 0; E5 0; B 0; D5 0; C5 0; A A2; A E3; 0 A3; C 0; E 0; A 0; B E2; B E3; 0 Ab3; E 0; C5 0; B 0; A A2; A E3; 0 A3; 0 0; E5 0; Eb5 0;E5 0; Eb5 0; E5 0; B 0; D5 0; C5 0;
     A A2; A E3; 0 A3; C 0; E 0; A 0; B E2; B E3; 0 Ab3; E 0; Ab 0; B 0; C5 A2; C5 E3; 0 A3; E 0; E5 0; Eb5 0; E5 0; Eb5 0; E5 0; B 0; D5 0; C5 0; A A2; A E3; 0 A3;C 0; E 0; A 0;
@@ -71,3 +71,4 @@ for k = 1:N0
    sound(x,fs);
    pause(t(k))
 end
+sound(y,Fs)
